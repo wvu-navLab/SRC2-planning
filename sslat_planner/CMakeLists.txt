@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(waypoint_gen)
+project(sslat_planner)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -58,10 +58,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  GenerateWaypoint.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -71,13 +72,13 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-  sensor_msgs
-  nav_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+#   geometry_msgs
+#   sensor_msgs
+#   nav_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -143,7 +144,9 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/waypoint_nav_node.cpp)
 
-add_executable(waypoint_gen src/waypoint_gen.cpp)
+add_executable(sslat_planner src/sslat_planner.cpp)
+target_link_libraries(sslat_planner ${catkin_LIBRARIES})
+# add_dependencies(sslat_planner sslat_planner_generate_messages_cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -155,17 +158,14 @@ add_executable(waypoint_gen src/waypoint_gen.cpp)
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(waypoint_gen waypoint_gen_generate_messages_cpp)
-
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(waypoint_gen 
+target_link_libraries(sslat_planner 
   ${catkin_LIBRARIES}
 )
-
 
 #############
 ## Install ##

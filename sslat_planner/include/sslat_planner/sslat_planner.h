@@ -1,16 +1,16 @@
 /*!
- * \waypoint_gen.h
- * \brief waypoint_gen (...).
+ * \waypoint_nav.h
+ * \brief waypoint_nav (...).
  *
- * Waypoint generation (...).
+ * Waypoint navigation (...).
  *
  * \author Bernardo Martinez Rocamora Junior, WVU - bm00002@mix.wvu.edu
  * \author Matteo De Petrillo, WVU - madepetrillo@mix.wvu.edu
  * \date June 01, 2020
  */
 
-#ifndef WAYPOINT_GEN_H
-#define WAYPOINT_GEN_H
+#ifndef SSLAT_PLANNER_H
+#define SSLAT_PLANNER_H
 
 // Include cpp important headers
 #include <math.h>
@@ -18,8 +18,6 @@
 #include <chrono>
 #include <thread>
 #include <termios.h>
-#include <vector>
-
 
 // ROS headers
 #include <ros/ros.h>
@@ -33,41 +31,35 @@
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
-#include <waypoint_gen/GenerateWaypoint.h>
+#include <sensor_msgs/LaserScan.h>
 
-class WaypointGeneration
+
+class SSLatPlanner
 {
 public:
-    WaypointGeneration(ros::NodeHandle & nh);
+    SSLatPlanner(ros::NodeHandle & nh);
 
-    bool generateWaypoint(waypoint_gen::GenerateWaypoint::Request &req, waypoint_gen::GenerateWaypoint::Response &res);
-    void setupPathStart();
-
-    bool startedOdom = false;
+    void sendWaypoint();
 
 private:
     // Node Handle
     ros::NodeHandle & nh_;
 
     // Subscriber
-    ros::Subscriber sub_odometry_;
+    ros::Subscriber subOdom;
+    ros::Subscriber subLidar;
 
-    // // Publisher
-    // ros::Publisher pubGoalPose;
+    // Publisher
+    ros::Publisher pubPose;
 
-    // Service Servers
-    ros::ServiceServer srv_waypoint_gen_;
-
+    geometry_msgs::Pose goalPos_;
     geometry_msgs::Pose localPos_curr_;
     geometry_msgs::Twist localVel_curr_;
-    geometry_msgs::Pose goalPos_;
+    sensor_msgs::LaserScan scan_curr_;
     
     void odometryCallback(const nav_msgs::Odometry::ConstPtr& msg);
-
-    std::vector<double> x_, y_;
-    int counter_ = 0;
-
+    void lidarCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
 };
 
 
-#endif // WAYPOINT_GEN_H
+#endif // SSLAT_PLANNER_H
