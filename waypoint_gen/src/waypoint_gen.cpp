@@ -3,9 +3,9 @@
  * \brief waypoint_gen (...).
  *
  * Waypoint generation (...).
- * 
+ *
  * \author Bernardo Martinez Rocamora Junior, WVU - bm00002@mix.wvu.edu
- * 
+ *
  * \date June 20, 2020
  */
 
@@ -23,7 +23,7 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
     // Service Servers
     srv_waypoint_gen_ = nh_.advertiseService("navigation/generate_goal", &WaypointGeneration::generateWaypoint, this);
 
-    if (!nh_.hasParam("/waypoints/")) 
+    if (!nh_.hasParam("/waypoints/"))
     {
         ROS_INFO("No waypoints found.");
     }
@@ -94,8 +94,8 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
         ey = y_[counter_] - localPos_curr_.position.y;
 
         distance = std::hypot(ex, ey);
-        
-        if (distance < 1.0) 
+
+        if (distance < 1.0)
         {
             (++counter_ > (x_.size()-1))? counter_ = 0 : counter_;
 
@@ -111,13 +111,13 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
         {
             goalPos_.position.x = x_[counter_];
             goalPos_.position.y = y_[counter_];
-            
-            ROS_INFO_STREAM("New goal pose" << goalPos_);
+
+            // ROS_INFO_STREAM("New goal pose" << goalPos_);
             // pubGoalPose.publish(goalPos_);
             res.goal = goalPos_;
             res.success = true;
         }
-        
+
     }
     else
     {
@@ -139,13 +139,13 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "waypoint_gen");
     ros::NodeHandle nh("");
-    
+
     ros::Rate rate(10);
-    
+
     ROS_INFO("Waypoint Gen Node initializing...");
     WaypointGeneration waypoint_gen(nh);
 
-    while(!waypoint_gen.startedOdom) 
+    while(!waypoint_gen.startedOdom)
     {
         ros::spinOnce();
         rate.sleep();
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
     waypoint_gen.setupPathStart();
 
-    // while(ros::ok()) 
+    // while(ros::ok())
     // {
     //     waypoint_gen.generateWaypoint();
     //     ros::spinOnce();
@@ -161,6 +161,6 @@ int main(int argc, char **argv)
     // }
 
     ros::spin();
-                
+
     return 0;
 }
