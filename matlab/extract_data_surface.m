@@ -26,3 +26,17 @@ end
 slope = hypot(dfdx, dfdy);
 
 save('map_src2_updated.mat')
+
+
+fun = @(block_struct) mean(block_struct.data(:));
+SLOPE = blockproc(slope, [12 12], fun);
+
+X_REDUCED = blockproc(X, [12 12], fun);
+Y_REDUCED = blockproc(Y, [12 12], fun);
+
+fid = fopen('X_REDUCED.txt','wt');
+for ii = 1:size(X_REDUCED,1)
+    fprintf(fid,'%g\t',X_REDUCED(ii,:));
+    fprintf(fid,'\n');
+end
+fclose(fid);
