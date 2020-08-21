@@ -1,6 +1,6 @@
 <launch>
   <!-- excavator_driving_tools launch file -->
-  <rosparam command="load" file="$(find waypoint_gen)/waypoints.yaml" />
+  <rosparam command="load" file="$(find waypoint_gen)/waypointsSimpleExcavator.yaml" />
 
   <group ns="excavator_1">
 

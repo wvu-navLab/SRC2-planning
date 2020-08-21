@@ -15,7 +15,7 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
     : nh_(nh)
 {
     // Subscriber
-    sub_odometry_ = nh_.subscribe("localization/odometry/sensor_fusion", 1000, &WaypointGeneration::odometryCallback, this);
+    sub_odometry_ = nh_.subscribe("localization/odometry/sensor_fusion", 1, &WaypointGeneration::odometryCallback, this);
 
     // // Publisher
     // pubGoalPose = nh_.advertise<geometry_msgs::Pose>("navigation/goal_pos", 1000);
