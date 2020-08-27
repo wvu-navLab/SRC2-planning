@@ -95,7 +95,7 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
 
         distance = std::hypot(ex, ey);
 
-        if (distance < 1.0)
+        if (distance < 2.0)
         {
             (++counter_ > (x_.size()-1))? counter_ = 0 : counter_;
 
