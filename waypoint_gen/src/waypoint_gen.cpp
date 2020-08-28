@@ -97,6 +97,11 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
 {
     if (req.start == true)
     {
+        if (req.next == true)
+        {
+            ++counter_;
+        }
+
         double ex, ey, distance;
 
         ex = x_[counter_] - localPos_curr_.position.x;
