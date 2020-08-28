@@ -99,7 +99,7 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
     {
         if (req.next == true)
         {
-            ++counter_;
+            (++counter_ > (x_.size()-1))? counter_ = 0 : counter_;
         }
 
         double ex, ey, distance;
