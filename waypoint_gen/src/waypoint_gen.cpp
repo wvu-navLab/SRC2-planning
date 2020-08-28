@@ -32,6 +32,14 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
         ROS_INFO("Waypoints loaded.");
     }
 
+    if (nh_.getParam("/start_index", counter_)){
+	  
+	ROS_INFO("Found Start Index ");
+      }else{
+	counter_ =0;
+    }
+
+
     nh_.getParam("/waypoints/x", x_);
     nh_.getParam("/waypoints/y", y_);
 
@@ -52,9 +60,9 @@ void WaypointGeneration::setupPathStart()
     double min_distance = 200;
 
     double ex, ey, distance;
-
-    for (int i = 0; i < x_.size(); ++i)
-    {
+    if(counter_==0){
+    	for (int i = 0; i < x_.size(); ++i)
+    	{
         // ROS_INFO_STREAM("x: " << localPos_curr_.position.x);
         // ROS_INFO_STREAM("y: " << localPos_curr_.position.y);
         ex = x_[i] - localPos_curr_.position.x;
@@ -68,6 +76,7 @@ void WaypointGeneration::setupPathStart()
             counter_ = i;
             ROS_INFO_STREAM("Distance: " << min_distance);
         }
+   	 }
     }
 
     ROS_INFO_STREAM("Starting from index: " << counter_);
