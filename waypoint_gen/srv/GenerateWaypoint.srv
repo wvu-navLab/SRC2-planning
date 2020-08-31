@@ -2,4 +2,5 @@ bool start
 bool next
 ---
 geometry_msgs/Pose goal
+float64 type
 bool success

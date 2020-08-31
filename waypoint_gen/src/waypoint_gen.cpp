@@ -31,6 +31,12 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
     {
         ROS_INFO("Waypoints loaded.");
     }
+    if (!nh_.hasParam("/waypoints/type"))
+    {
+        ROS_INFO("No vector of waypoint types found, please specify types.");
+    }
+
+
 
     if (nh_.getParam("/start_index", counter_)){
 	  
@@ -42,6 +48,7 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
 
     nh_.getParam("/waypoints/x", x_);
     nh_.getParam("/waypoints/y", y_);
+    nh_.getParam("/waypoints/type", type_);
 
     ROS_INFO_STREAM("x size: " << x_.size());
     ROS_INFO_STREAM("y size: " << y_.size());
@@ -119,16 +126,18 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
             ROS_INFO_STREAM("New goal pose" << goalPos_);
             // pubGoalPose.publish(goalPos_);
             res.goal = goalPos_;
+	    res.type = type_[counter_];
             res.success = true;
         }
         else
         {
             goalPos_.position.x = x_[counter_];
             goalPos_.position.y = y_[counter_];
-
+	    
             // ROS_INFO_STREAM("New goal pose" << goalPos_);
             // pubGoalPose.publish(goalPos_);
             res.goal = goalPos_;
+	    res.type = type_[counter_];
             res.success = true;
         }
 
@@ -136,6 +145,7 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
     else
     {
         res.goal = localPos_curr_;
+	res.type = 0.0;
         res.success = false;
     }
     return true;
