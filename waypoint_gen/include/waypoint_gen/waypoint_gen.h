@@ -14,7 +14,7 @@
 
 // Include cpp important headers
 #include <math.h>
-#include <stdio.h> 
+#include <stdio.h>
 #include <chrono>
 #include <thread>
 #include <termios.h>
@@ -34,14 +34,8 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <waypoint_gen/GenerateWaypoint.h>
+#include <waypoint_gen/StartWaypoint.h>
 
-
-#define REGULAR_WP 0
-#define HOMING_WP 1
-#define CRATER0_WP 2
-#define CRATER1_WP 3
-#define CRATER2_WP 4
-#define CRATER3_WP 5
 
 class WaypointGeneration
 {
@@ -49,7 +43,7 @@ public:
     WaypointGeneration(ros::NodeHandle & nh);
 
     bool generateWaypoint(waypoint_gen::GenerateWaypoint::Request &req, waypoint_gen::GenerateWaypoint::Response &res);
-    void setupPathStart();
+    bool setupPathStart(waypoint_gen::StartWaypoint::Request &req, waypoint_gen::StartWaypoint::Response &res);
 
     bool startedOdom = false;
 
@@ -65,11 +59,12 @@ private:
 
     // Service Servers
     ros::ServiceServer srv_waypoint_gen_;
+    ros::ServiceServer srv_waypoint_start_;
 
     geometry_msgs::Pose localPos_curr_;
     geometry_msgs::Twist localVel_curr_;
     geometry_msgs::Pose goalPos_;
-    
+
     void odometryCallback(const nav_msgs::Odometry::ConstPtr& msg);
 
     std::vector<double> x_, y_, type_;

@@ -22,6 +22,8 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
 
     // Service Servers
     srv_waypoint_gen_ = nh_.advertiseService("navigation/generate_goal", &WaypointGeneration::generateWaypoint, this);
+    srv_waypoint_start_ = nh_.advertiseService("navigation/start", &WaypointGeneration::setupPathStart, this);
+
 
     if (!nh_.hasParam("/waypoints/"))
     {
@@ -39,7 +41,7 @@ WaypointGeneration::WaypointGeneration(ros::NodeHandle & nh)
 
 
     if (nh_.getParam("/start_index", counter_)){
-	  
+
 	ROS_INFO("Found Start Index ");
       }else{
 	counter_ =0;
@@ -62,8 +64,9 @@ void WaypointGeneration::odometryCallback(const nav_msgs::Odometry::ConstPtr& ms
 }
 
 
-void WaypointGeneration::setupPathStart()
+bool WaypointGeneration::setupPathStart(waypoint_gen::StartWaypoint::Request &req, waypoint_gen::StartWaypoint::Response &res)
 {
+    if(req.start){
     double min_distance = 200;
 
     double ex, ey, distance;
@@ -95,6 +98,10 @@ void WaypointGeneration::setupPathStart()
     goalPos_.orientation.x = 0.0;
     goalPos_.orientation.y = 0.0;
     goalPos_.orientation.z = 0.0;
+
+  }
+  res.success = true;
+  return true;
 
     // ROS_INFO_STREAM("New goal pose" << goalPos_);
     // pubGoalPose.publish(goalPos_);
@@ -133,7 +140,7 @@ bool WaypointGeneration::generateWaypoint(waypoint_gen::GenerateWaypoint::Reques
         {
             goalPos_.position.x = x_[counter_];
             goalPos_.position.y = y_[counter_];
-	    
+
             // ROS_INFO_STREAM("New goal pose" << goalPos_);
             // pubGoalPose.publish(goalPos_);
             res.goal = goalPos_;
@@ -175,7 +182,7 @@ int main(int argc, char **argv)
         rate.sleep();
     }
 
-    waypoint_gen.setupPathStart();
+    //waypoint_gen.setupPathStart();
 
     // while(ros::ok())
     // {

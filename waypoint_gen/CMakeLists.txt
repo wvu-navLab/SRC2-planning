@@ -61,6 +61,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   GenerateWaypoint.srv
+  StartWaypoint.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -162,7 +163,7 @@ add_dependencies(waypoint_gen waypoint_gen_generate_messages_cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(waypoint_gen 
+target_link_libraries(waypoint_gen
   ${catkin_LIBRARIES}
 )
 
