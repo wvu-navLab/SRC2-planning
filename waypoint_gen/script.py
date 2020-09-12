@@ -30,7 +30,7 @@ str = str[0:-1] + "] "
 print(str)
 str = "   type: [ "
 for i in range(len(y)):
-	if i==11 or i==24 or i==36 or i==45 or i==60:
+	if i==14 or i==34 or i==50 or i==66 or i==77 or i==89 or i==99 or i==118:
 		str = str + "1, "
 	else:
 		str = str + "0, "
